@@ -3,234 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canvas Oyunu</title>
-    <!-- AdSense Meta Tag -->
+    <title>Harika HTML5 Canvas Oyunu</title>
+    
     <meta name="google-adsense-account" content="ca-pub-5196932641681211">
     
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts - Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5196932641681211"
+     crossorigin="anonymous"></script>
+
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8;
-            color: #334155;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 16px;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            font-family: sans-serif;
+            text-align: center;
         }
+
+        .ad-container {
+            width: 100%;
+            max-width: 970px; /* Reklam boyutunu kontrol eder */
+            margin: 20px 0;
+        }
+        
         canvas {
-            background-color: #ffffff;
-            border: 2px solid #cbd5e1;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            touch-action: none; /* Disable default touch actions */
-        }
-        /* Custom CSS for a better ad block display */
-        .adsbygoogle {
-            margin: 1rem 0;
-            border-radius: 8px;
-            overflow: hidden;
+            border: 2px solid #333;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
     </style>
 </head>
-<body class="bg-gray-100 flex flex-col items-center min-h-screen">
+<body>
 
-    <!-- AdSense Reklam Kodu - Sayfanın En Üstü -->
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-5196932641681211"
-         data-ad-slot="4923831956"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
+    <div class="ad-container">
+        <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-5196932641681211"
+            data-ad-slot="4923831956"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <h1>Harika Canvas Oyunu</h1>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
     <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-
-    <main class="w-full max-w-4xl p-6 bg-white rounded-lg shadow-lg mt-6 mb-6">
-        <h1 class="text-4xl font-bold text-center mb-6 text-gray-800">HTML Canvas Oyunu</h1>
-        <p class="text-center text-gray-600 mb-6">Fare veya parmaklarınızı kullanarak topu hareket ettirin. Duvarlara çarpmayın!</p>
-
-        <!-- Canvas element for the game -->
-        <div class="flex justify-center mb-4">
-            <canvas id="gameCanvas" width="800" height="600"></canvas>
-        </div>
-        
-        <div class="text-center">
-            <p id="scoreText" class="text-xl font-bold text-gray-800">Skor: 0</p>
-            <div id="messageBox" class="mt-4 p-4 rounded-md hidden"></div>
-        </div>
-
-    </main>
-
-    <!-- AdSense Reklam Kodu - Sayfanın En Altı -->
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-5196932641681211"
-         data-ad-slot="4923831956"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-    
-    <script>
-        // Get the canvas and its context
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        const messageBox = document.getElementById('messageBox');
-        const scoreText = document.getElementById('scoreText');
-
-        // Game variables
-        let score = 0;
-        let gameOver = false;
         
-        // Player object
-        const player = {
-            x: canvas.width / 2,
-            y: canvas.height / 2,
-            radius: 20,
-            color: '#3b82f6',
-        };
-
-        // Obstacles (walls)
-        const walls = [
-            { x: 0, y: 0, width: canvas.width, height: 10 },
-            { x: 0, y: canvas.height - 10, width: canvas.width, height: 10 },
-            { x: 0, y: 0, width: 10, height: canvas.height },
-            { x: canvas.width - 10, y: 0, width: 10, height: canvas.height },
-        ];
-        
-        // Food object
-        const food = {
-            x: 0,
-            y: 0,
-            radius: 15,
-            color: '#f97316',
-        };
-        
-        // Game loop
-        function gameLoop() {
-            if (gameOver) {
-                return;
-            }
-            
-            // Clear the canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw player
-            ctx.beginPath();
-            ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
-            ctx.fillStyle = player.color;
-            ctx.fill();
-            
-            // Draw walls
-            walls.forEach(wall => {
-                ctx.fillStyle = '#1e293b';
-                ctx.fillRect(wall.x, wall.y, wall.width, wall.height);
-            });
-            
-            // Draw food
-            ctx.beginPath();
-            ctx.arc(food.x, food.y, food.radius, 0, Math.PI * 2);
-            ctx.fillStyle = food.color;
-            ctx.fill();
-
-            // Check for collision with walls
-            walls.forEach(wall => {
-                const playerLeft = player.x - player.radius;
-                const playerRight = player.x + player.radius;
-                const playerTop = player.y - player.radius;
-                const playerBottom = player.y + player.radius;
-                
-                const wallLeft = wall.x;
-                const wallRight = wall.x + wall.width;
-                const wallTop = wall.y;
-                const wallBottom = wall.y + wall.height;
-                
-                if (playerRight > wallLeft && playerLeft < wallRight &&
-                    playerBottom > wallTop && playerTop < wallBottom) {
-                    endGame();
-                }
-            });
-
-            // Check for collision with food
-            const dx = player.x - food.x;
-            const dy = player.y - food.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < player.radius + food.radius) {
-                score++;
-                scoreText.textContent = `Skor: ${score}`;
-                resetFoodPosition();
-            }
-            
-            requestAnimationFrame(gameLoop);
-        }
-
-        // Reset food position
-        function resetFoodPosition() {
-            food.x = Math.random() * (canvas.width - food.radius * 2) + food.radius;
-            food.y = Math.random() * (canvas.height - food.radius * 2) + food.radius;
-        }
-
-        // End the game and show a message
-        function endGame() {
-            gameOver = true;
-            messageBox.textContent = `Oyun Bitti! Final Skorunuz: ${score}`;
-            messageBox.classList.remove('hidden');
-            messageBox.classList.add('bg-red-200', 'text-red-800');
-            canvas.style.opacity = '0.5';
-        }
-
-        // Handle mouse/touch movement
-        function handleMove(event) {
-            if (gameOver) return;
-
-            let rect = canvas.getBoundingClientRect();
-            let newX, newY;
-
-            if (event.type === 'mousemove' || event.type === 'mousedown') {
-                newX = event.clientX - rect.left;
-                newY = event.clientY - rect.top;
-            } else if (event.type === 'touchmove' || event.type === 'touchstart') {
-                newX = event.touches[0].clientX - rect.left;
-                newY = event.touches[0].clientY - rect.top;
-            }
-            
-            // Update player position
-            if (newX !== undefined && newY !== undefined) {
-                player.x = newX;
-                player.y = newY;
-            }
-        }
-
-        // Event listeners for mouse and touch
-        canvas.addEventListener('mousemove', handleMove);
-        canvas.addEventListener('touchmove', handleMove);
-
-        // Resize handler for responsiveness
-        function handleResize() {
-            const container = canvas.parentElement;
-            const size = Math.min(container.offsetWidth, window.innerHeight * 0.7);
-            canvas.width = size;
-            canvas.height = size * 0.75; // Maintain aspect ratio
-            resetFoodPosition();
-            // Game variables will be updated implicitly when the canvas dimensions change
-        }
-
-        window.addEventListener('resize', handleResize);
-        window.onload = function () {
-            handleResize();
-            resetFoodPosition();
-            gameLoop();
-        }
+        // Örnek bir çizim
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(50, 50, 150, 100);
     </script>
+    
+    <div class="ad-container">
+        <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-5196932641681211"
+            data-ad-slot="4923831956"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
 </body>
 </html>
