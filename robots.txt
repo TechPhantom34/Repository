@@ -1,0 +1,3 @@
+#This content is for robots
+sitemap: https://lovely-brioche-abd018.netlify.app/sitemap.xml
+user agent :*
