@@ -1,4 +1,3 @@
-<h2>
 <url>https://lovely-brioche-abd018.netlify.app/robots.txt</url>
 <description>In this site rules for robots</description>
 <url>https://lovely-brioche-abd018.netlify.app/Ads.txt</url>
@@ -7,4 +6,3 @@
 <description>Main url</description>
 <url>https://lovely-brioche-abd018.netlify.app/sitemap.html</url>
 <description>Sitemap url</description>
-</h2>
