@@ -1,9 +1,39 @@
-<<html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Asistanı</title>
+</head>
 <body>
+    <h1>Puter.js AI Asistanı</h1>
+    <input type="text" id="userInput" placeholder="Sorunuzu buraya yazın...">
+    <button onclick="getAIResponse()">Gönder</button>
+    <div id="responseArea"></div>
+
     <script src="https://js.puter.com/v2/"></script>
     <script>
-        puter.ai.chat(`Why did the chicken cross the road?`).then(puter.print);
+        async function getAIResponse() {
+            const userInput = document.getElementById('userInput').value;
+            const responseArea = document.getElementById('responseArea');
+
+            if (!userInput) {
+                alert('Lütfen bir soru girin.');
+                return;
+            }
+
+            responseArea.innerHTML = 'Yapay zeka düşünüyor...';
+
+            try {
+                // puter.ai.chat() fonksiyonunu kullanarak AI ile etkileşim kurun
+                const response = await puter.ai.chat(userInput, {
+                    model: "gpt-4.1-nano" // veya "claude-sonnet-4" gibi başka bir model
+                });
+
+                responseArea.innerHTML = response;
+            } catch (error) {
+                responseArea.innerHTML = `Bir hata oluştu: ${error.message}`;
+                console.error('Yapay zeka yanıtı alınırken hata:', error);
+            }
+        }
     </script>
 </body>
 </html>
- d=""></path>
