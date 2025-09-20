@@ -5,6 +5,8 @@ const CACHED_URLS = [
   '/styles/main.css',
   '/scripts/main.js',
   '/images/uygulama-logom.png'
+  '/manifest.json'
+  '/sw.js'
 ];
 
 // Dosyaları önbelleğe alma işlemi
