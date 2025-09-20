@@ -3,298 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adcash Dino Oyunu</title>
+    <title>Global Haber - Sektörün Nabzı</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Modern font kullanımı için Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #1a202c;
-            color: #e2e8f0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            text-align: center;
-        }
-
-        #game-container {
-            padding: 1.5rem;
-            border-radius: 12px;
-            background-color: #2d3748;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        canvas {
-            border: 2px solid #4a5568;
-            background-color: #f0f0f0;
-            border-radius: 8px;
-        }
-
-        .info-box {
-            background-color: #4a5568;
-            color: #e2e8f0;
-            padding: 0.75rem 1.25rem;
-            border-radius: 8px;
-            font-weight: bold;
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        #message-box {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(45, 55, 72, 0.95);
-            padding: 2rem;
-            border-radius: 12px;
-            text-align: center;
-            display: none;
-            z-index: 1000;
-        }
-
-        .button {
-            padding: 0.75rem 1.5rem;
-            background-color: #48bb78;
-            color: #fff;
-            font-weight: bold;
-            border-radius: 9999px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            border: none;
-            margin-top: 1rem;
-        }
-
-        .button:hover {
-            background-color: #38a169;
-        }
-
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #48bb78;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 2s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            font-family: 'Poppins', sans-serif;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800">
 
-    <div id="game-container">
-        <h1 class="text-3xl font-bold">Dino Oyunu</h1>
-        <div class="info-box">
-            <span>Can: <span id="lives">3</span></span>
-            <span>Skor: <span id="score">0</span></span>
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="flex-shrink-0">
+                <h1 class="text-3xl font-bold text-gray-900 tracking-wide">Global<span class="text-blue-600">Haber</span></h1>
+            </a>
+            
+            <div class="hidden md:block w-72 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-600 text-sm">
+                Sponsorluk Alanı
+            </div>
+            
+            <nav class="hidden md:flex space-x-6">
+                <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors">Giriş Yap</a>
+                <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors">Abone Ol</a>
+            </nav>
         </div>
-        <canvas id="gameCanvas" width="800" height="200"></canvas>
-    </div>
+    </header>
+    
+    <nav class="bg-gray-900 text-white">
+        <div class="container mx-auto px-4 py-4 flex justify-center md:justify-start space-x-6 md:space-x-8 text-lg font-semibold">
+            <a href="#" class="hover:text-blue-400 transition-colors">Manşet</a>
+            <a href="#" class="hover:text-blue-400 transition-colors">Ekonomi</a>
+            <a href="#" class="hover:text-blue-400 transition-colors">Teknoloji</a>
+            <a href="#" class="hover:text-blue-400 transition-colors">Spor</a>
+            <a href="#" class="hover:text-blue-400 transition-colors">Analiz</a>
+        </div>
+    </nav>
 
-    <!-- Oyun Durumu Mesaj Kutusu -->
-    <div id="message-box">
-        <h2 class="text-2xl font-bold mb-2" id="message-title">Oyun Bitti!</h2>
-        <p class="mb-4" id="message-text">Skorunuz: <span id="finalScore">0</span></p>
-        <button id="adButton" class="button">Reklam İzle ve Can Kazan</button>
-        <button id="restartButton" class="button">Tekrar Oyna</button>
-    </div>
+    <section class="container mx-auto px-4 py-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white rounded-xl shadow-xl overflow-hidden group">
+                <div class="w-full h-96 relative">
+                    <div class="w-full h-full bg-gray-300 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 1000 600" preserveAspectRatio="none">
+                            <rect width="100%" height="100%" fill="#cccccc" />
+                            <text x="50%" y="50%" text-anchor="middle" alignment-baseline="middle" font-size="40" font-weight="bold" font-family="Arial, sans-serif" fill="#ffffff">Manşet Görseli</text>
+                        </svg>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <span class="text-sm font-semibold text-blue-600">SON DAKİKA</span>
+                    <h2 class="text-3xl font-bold text-gray-900 mt-2 mb-4 leading-tight group-hover:text-blue-600 transition-colors">Yapay Zeka, Global Piyasaları Yeniden Şekillendiriyor</h2>
+                    <p class="text-gray-600 line-clamp-3">Analistler, yapay zekanın iş dünyasında ve finans piyasalarında benzeri görülmemiş bir dönüşüme yol açacağını belirtiyor. Uzman raporları, yeni yatırım alanlarının ortaya çıktığına işaret ediyor.</p>
+                    <a href="#" class="inline-block mt-4 text-blue-600 font-semibold hover:underline">Haberi Oku &rarr;</a>
+                </div>
+            </div>
 
-    <!-- Adcash Reklam Scriptleri -->
-    <script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
-    <script type="text/javascript">
-        // Adcash zoneId'nizi buraya ekleyin
-        const adcashZoneId = '10425918';
-    </script>
-
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const scoreEl = document.getElementById('score');
-        const livesEl = document.getElementById('lives');
-        const messageBox = document.getElementById('message-box');
-        const messageTitleEl = document.getElementById('message-title');
-        const messageTextEl = document.getElementById('message-text');
-        const finalScoreEl = document.getElementById('finalScore');
-        const adButton = document.getElementById('adButton');
-        const restartButton = document.getElementById('restartButton');
-
-        let score = 0;
-        let lives = 3;
-        let isPlaying = false;
-        let isAdLoading = false;
-
-        // Dinozor ve engellerin özellikleri
-        const dino = {
-            x: 50,
-            y: canvas.height - 50,
-            width: 40,
-            height: 40,
-            color: '#333',
-            isJumping: false,
-            jumpSpeed: 0,
-        };
-
-        let obstacles = [];
-        let obstacleSpeed = 5;
-
-        // Klavye olay dinleyicisi
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && !dino.isJumping && isPlaying) {
-                dino.isJumping = true;
-                dino.jumpSpeed = -15;
-            }
-        });
-
-        function createObstacle() {
-            const size = 20 + Math.random() * 30;
-            obstacles.push({
-                x: canvas.width,
-                y: canvas.height - size,
-                width: size,
-                height: size,
-                color: '#888',
-            });
-        }
-
-        let obstacleInterval = setInterval(() => {
-            if (isPlaying) {
-                createObstacle();
-            }
-        }, 1500);
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Zemin Çizimi
-            ctx.fillStyle = '#666';
-            ctx.fillRect(0, canvas.height - 10, canvas.width, 10);
-
-            // Dinozor Çizimi
-            ctx.fillStyle = dino.color;
-            ctx.fillRect(dino.x, dino.y, dino.width, dino.height);
-
-            // Engelleri Çizme
-            obstacles.forEach(obstacle => {
-                ctx.fillStyle = obstacle.color;
-                ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
-            });
-        }
-
-        function update() {
-            if (!isPlaying) return;
-
-            // Dinozor Zıplama Mantığı
-            if (dino.isJumping) {
-                dino.y += dino.jumpSpeed;
-                dino.jumpSpeed += 1;
-                if (dino.y >= canvas.height - dino.height) {
-                    dino.y = canvas.height - dino.height;
-                    dino.isJumping = false;
-                }
-            }
-
-            // Engelleri Hareket Ettirme
-            obstacles = obstacles.filter(obstacle => obstacle.x + obstacle.width > 0);
-            obstacles.forEach(obstacle => {
-                obstacle.x -= obstacleSpeed;
-
-                // Çarpışma Kontrolü
-                if (dino.x < obstacle.x + obstacle.width &&
-                    dino.x + dino.width > obstacle.x &&
-                    dino.y < obstacle.y + obstacle.height &&
-                    dino.y + dino.height > obstacle.y) {
-                    
-                    lives--;
-                    livesEl.textContent = lives;
-                    
-                    if (lives <= 0) {
-                        gameOver();
-                    } else {
-                        // Engelden kurtulma
-                        obstacles = []; // Engelleri temizle
-                        dino.y = canvas.height - dino.height; // Dino'yu yere döndür
-                        dino.isJumping = false;
-                    }
-                }
-            });
-
-            score++;
-            scoreEl.textContent = score;
-
-            draw();
-            requestAnimationFrame(update);
-        }
-
-        function gameOver() {
-            isPlaying = false;
-            finalScoreEl.textContent = score;
-            messageBox.style.display = 'block';
-            adButton.style.display = 'block';
-            messageTitleEl.textContent = 'Oyun Bitti!';
-            messageTextEl.innerHTML = `Skorunuz: <span id="finalScore">${score}</span>`;
-        }
-
-        function startGame() {
-            score = 0;
-            lives = 3;
-            dino.y = canvas.height - dino.height;
-            obstacles = [];
-            scoreEl.textContent = score;
-            livesEl.textContent = lives;
-            messageBox.style.display = 'none';
-            isPlaying = true;
-            update();
-        }
-
-        // Reklam butonu olay dinleyicisi
-        adButton.addEventListener('click', () => {
-            if (isAdLoading) return;
-
-            // Mesaj kutusunu ve butonu güncelle
-            isAdLoading = true;
-            adButton.disabled = true;
-            adButton.innerHTML = `<span class="loader"></span> Reklam Yükleniyor...`;
-
-            // Adcash reklamını çağırma
-            // Bu örnekte 5 saniyelik bir gecikme ile reklamı simüle ediyoruz
-            // Gerçek bir Adcash reklamı burada çalışacaktır
-            setTimeout(() => {
-                // Reklam izlendi, can ver ve oyunu başlat
-                lives = 1;
-                livesEl.textContent = lives;
-                startGame();
+            <div class="grid grid-rows-2 gap-8">
+                <div class="bg-white rounded-xl shadow-lg flex flex-col md:flex-row items-center overflow-hidden">
+                    <div class="w-full h-40 md:w-48 md:h-48 bg-gray-300 flex-shrink-0 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 400 300" preserveAspectRatio="none">
+                            <rect width="100%" height="100%" fill="#cccccc" />
+                            <text x="50%" y="50%" text-anchor="middle" alignment-baseline="middle" font-size="20" font-weight="bold" font-family="Arial, sans-serif" fill="#ffffff">Görsel</text>
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors">Borsa İstanbul'da Rekor Artış</h3>
+                        <p class="text-gray-600 text-sm mt-1 line-clamp-2">Piyasa uzmanları, son dönemdeki yükselişin arkasındaki dinamikleri değerlendirdi.</p>
+                        <a href="#" class="text-blue-500 font-medium text-sm mt-2 inline-block">Devamı...</a>
+                    </div>
+                </div>
                 
-                isAdLoading = false;
-                adButton.disabled = false;
-                adButton.innerHTML = 'Reklam İzle ve Can Kazan';
+                <div class="bg-white rounded-xl shadow-lg flex flex-col md:flex-row items-center overflow-hidden">
+                    <div class="w-full h-40 md:w-48 md:h-48 bg-gray-300 flex-shrink-0 flex items-center justify-center">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 400 300" preserveAspectRatio="none">
+                            <rect width="100%" height="100%" fill="#cccccc" />
+                            <text x="50%" y="50%" text-anchor="middle" alignment-baseline="middle" font-size="20" font-weight="bold" font-family="Arial, sans-serif" fill="#ffffff">Görsel</text>
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors">Futbolda Tarihi Transfer</h3>
+                        <p class="text-gray-600 text-sm mt-1 line-clamp-2">Kulüp yetkilileri, taraftarların heyecanla beklediği yıldız oyuncunun transferini resmen açıkladı.</p>
+                        <a href="#" class="text-blue-500 font-medium text-sm mt-2 inline-block">Devamı...</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                // Opsiyonel olarak, reklam gösterimini tetikleme
-                aclib.runInPagePush({
-                    zoneId: adcashZoneId,
-                    maxAds: 1,
-                });
-            }, 5000); // 5 saniyelik gecikme
-        });
+    <main class="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <div class="lg:col-span-3">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">En Yeni Haberler</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <article class="bg-white rounded-lg shadow-sm hover:shadow-xl transition-shadow overflow-hidden">
+                    <div class="w-full h-56 bg-gray-300 flex items-center justify-center">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 600 400" preserveAspectRatio="none">
+                            <rect width="100%" height="100%" fill="#cccccc" />
+                            <text x="50%" y="50%" text-anchor="middle" alignment-baseline="middle" font-size="28" font-weight="bold" font-family="Arial, sans-serif" fill="#ffffff">Haber Görseli</text>
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-semibold text-gray-500">TEKNOLOJİ</span>
+                        <h3 class="text-xl font-bold text-gray-900 mt-2 hover:text-blue-600 transition-colors">5G Teknolojisinde Çığır Açan Gelişme</h3>
+                        <p class="text-gray-600 mt-2 line-clamp-3">Yeni nesil telekomünikasyon teknolojisi, mobil internet hızını katlayacak. Uzmanlar, bu gelişmenin sektörde köklü değişiklikler getireceğini belirtiyor.</p>
+                        <a href="#" class="mt-4 inline-block text-blue-500 font-semibold hover:underline">Haberi Oku</a>
+                    </div>
+                </article>
+                <article class="bg-white rounded-lg shadow-sm hover:shadow-xl transition-shadow overflow-hidden">
+                    <div class="w-full h-56 bg-gray-300 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 600 400" preserveAspectRatio="none">
+                            <rect width="100%" height="100%" fill="#cccccc" />
+                            <text x="50%" y="50%" text-anchor="middle" alignment-baseline="middle" font-size="28" font-weight="bold" font-family="Arial, sans-serif" fill="#ffffff">Haber Görseli</text>
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-semibold text-gray-500">EKONOMİ</span>
+                        <h3 class="text-xl font-bold text-gray-900 mt-2 hover:text-blue-600 transition-colors">Türkiye'nin Enflasyon Verileri Açıklandı</h3>
+                        <p class="text-gray-600 mt-2 line-clamp-3">TÜİK, aylık ve yıllık enflasyon rakamlarını kamuoyu ile paylaştı. Beklenmedik veriler piyasada hareketliliğe neden oldu.</p>
+                        <a href="#" class="mt-4 inline-block text-blue-500 font-semibold hover:underline">Haberi Oku</a>
+                    </div>
+                </article>
+                </div>
+        </div>
 
-        // Tekrar Başlat butonu olay dinleyicisi
-        restartButton.addEventListener('click', () => {
-            startGame();
-        });
+        <aside class="lg:col-span-1">
+            
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Trendler</h3>
+                <ul class="space-y-4 text-sm">
+                    <li><a href="#" class="text-gray-600 hover:text-blue-600 transition-colors font-semibold">1. Kripto Para Piyasasında Son Durum</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-blue-600 transition-colors font-semibold">2. Genç Girişimciler İçin Hibe İmkanları</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-blue-600 transition-colors font-semibold">3. Geleceğin Meslekleri ve Eğitimleri</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-blue-600 transition-colors font-semibold">4. İstanbul'da Kültür ve Sanat Etkinlikleri</a></li>
+                </ul>
+            </div>
+            
+            <div class="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center text-gray-600 text-lg font-bold">
+                <p>300x250 Reklam Alanı</p>
+            </div>
 
-        // Sayfa yüklendiğinde oyunu başlat
-        window.onload = function() {
-            startGame();
-        }
-    </script>
+            <div class="mt-8 p-6 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg shadow-lg">
+                <h3 class="text-xl font-bold mb-2">Bültenimize Abone Olun</h3>
+                <p class="text-sm">En son haberler ve özel içerikler e-posta kutunuza gelsin.</p>
+                <form class="mt-4">
+                    <input type="email" placeholder="E-posta adresinizi girin" class="w-full p-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <button type="submit" class="w-full mt-3 bg-white text-blue-600 font-bold py-3 rounded-lg hover:bg-gray-100 transition-colors">Abone Ol</button>
+                </form>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h4 class="text-white text-xl font-bold mb-4">GlobalHaber</h4>
+                <p class="text-sm">Gündemin Nabzını Tutan Profesyonel Haber Kaynağınız.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4">Kategoriler</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-white transition-colors">Ekonomi</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Teknoloji</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Spor</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Analiz</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4">Kurumsal</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-white transition-colors">Hakkımızda</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">İletişim</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Yazar Kadromuz</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Reklam & Sponsorluk</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4">Takip Edin</h4>
+                <div class="flex space-x-4 text-2xl">
+                    <a href="#" class="hover:text-white transition-colors">FB</a>
+                    <a href="#" class="hover:text-white transition-colors">TW</a>
+                    <a href="#" class="hover:text-white transition-colors">IN</a>
+                </div>
+            </div>
+        </div>
+        <div class="mt-8 pt-8 border-t border-gray-700 text-center text-sm">
+            <p>&copy; 2024 GlobalHaber. Tüm hakları saklıdır. Gizlilik Politikası</p>
+        </div>
+    </footer>
+
 </body>
 </html>
