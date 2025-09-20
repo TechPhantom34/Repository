@@ -1,0 +1,9 @@
+{
+  "name": "Benim Her Amaçlı Uygulamam",
+  "short_name": "Uygulamam",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#007bff",
+  "description": "Her amaca uygun, çok yönlü web uygulamanız. Çevrimdışı ve hızlı deneyim sunar."
+}
