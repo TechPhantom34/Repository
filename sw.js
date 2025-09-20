@@ -7,6 +7,7 @@ const CACHED_URLS = [
   '/images/uygulama-logom.png'
   '/manifest.json'
   '/sw.js'
+   '/page2/index.html'
 ];
 
 // Dosyaları önbelleğe alma işlemi
