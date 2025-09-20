@@ -2,64 +2,299 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="clckd" content="c29f5347b2a717e5911fa5579aa83cac" />
-    <title>AI/ML Entegrasyonu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adcash Dino Oyunu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c;
+            color: #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        #game-container {
+            padding: 1.5rem;
+            border-radius: 12px;
+            background-color: #2d3748;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        canvas {
+            border: 2px solid #4a5568;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+
+        .info-box {
+            background-color: #4a5568;
+            color: #e2e8f0;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-weight: bold;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        #message-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(45, 55, 72, 0.95);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+            z-index: 1000;
+        }
+
+        .button {
+            padding: 0.75rem 1.5rem;
+            background-color: #48bb78;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: none;
+            margin-top: 1rem;
+        }
+
+        .button:hover {
+            background-color: #38a169;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #48bb78;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Yapay Zeka Destekli Uygulama</h1>
-    
-    <input type="text" id="userInput" placeholder="Sorunuzu buraya yazın...">
-    <button id="sendButton">Gönder</button>
+    <div id="game-container">
+        <h1 class="text-3xl font-bold">Dino Oyunu</h1>
+        <div class="info-box">
+            <span>Can: <span id="lives">3</span></span>
+            <span>Skor: <span id="score">0</span></span>
+        </div>
+        <canvas id="gameCanvas" width="800" height="200"></canvas>
+    </div>
+
+    <!-- Oyun Durumu Mesaj Kutusu -->
+    <div id="message-box">
+        <h2 class="text-2xl font-bold mb-2" id="message-title">Oyun Bitti!</h2>
+        <p class="mb-4" id="message-text">Skorunuz: <span id="finalScore">0</span></p>
+        <button id="adButton" class="button">Reklam İzle ve Can Kazan</button>
+        <button id="restartButton" class="button">Tekrar Oyna</button>
+    </div>
+
+    <!-- Adcash Reklam Scriptleri -->
+    <script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
     <script type="text/javascript">
-    aclib.runAutoTag({
-        zoneId: 'm1jz5bktml',
-    });
+        // Adcash zoneId'nizi buraya ekleyin
+        const adcashZoneId = '10425918';
     </script>
-    
-    <div id="response"></div>
-<script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
-    
+
     <script>
-        // API anahtarınızı buraya yazın.
-        // DİKKAT: Bu yöntem güvenlik açısından risklidir!
-        const API_KEY = "9343b0d5a52a4ed0a65649a7d50893ac";
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score');
+        const livesEl = document.getElementById('lives');
+        const messageBox = document.getElementById('message-box');
+        const messageTitleEl = document.getElementById('message-title');
+        const messageTextEl = document.getElementById('message-text');
+        const finalScoreEl = document.getElementById('finalScore');
+        const adButton = document.getElementById('adButton');
+        const restartButton = document.getElementById('restartButton');
 
-        // HTML elementlerini seçme
-        const userInput = document.getElementById('userInput');
-        const sendButton = document.getElementById('sendButton');
-        const responseDiv = document.getElementById('response');
+        let score = 0;
+        let lives = 3;
+        let isPlaying = false;
+        let isAdLoading = false;
 
-        sendButton.addEventListener('click', () => {
-            const query = userInput.value;
-            if (query) {
-                // AI servisine istek gönderme fonksiyonu
-                callAIApi(query);
+        // Dinozor ve engellerin özellikleri
+        const dino = {
+            x: 50,
+            y: canvas.height - 50,
+            width: 40,
+            height: 40,
+            color: '#333',
+            isJumping: false,
+            jumpSpeed: 0,
+        };
+
+        let obstacles = [];
+        let obstacleSpeed = 5;
+
+        // Klavye olay dinleyicisi
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && !dino.isJumping && isPlaying) {
+                dino.isJumping = true;
+                dino.jumpSpeed = -15;
             }
         });
 
-        async function callAIApi(text) {
-            responseDiv.textContent = "Cevap yükleniyor...";
-            try {
-                const response = await fetch('https://api.ornek.ai/v1/models/model_adi/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${API_KEY}` // API anahtarı bu kısımda gönderilir
-                    },
-                    body: JSON.stringify({
-                        prompt: text,
-                        max_tokens: 150
-                    })
-                });
-
-                const data = await response.json();
-                responseDiv.textContent = data.choices[0].text.trim();
-            } catch (error) {
-                console.error("API'den cevap alınamadı:", error);
-                responseDiv.textContent = "Bir hata oluştu. Lütfen tekrar deneyin.";
-            }
+        function createObstacle() {
+            const size = 20 + Math.random() * 30;
+            obstacles.push({
+                x: canvas.width,
+                y: canvas.height - size,
+                width: size,
+                height: size,
+                color: '#888',
+            });
         }
-    <script type='text/javascript' src='//pl27684354.revenuecpmgate.com/db/67/79/db67795e195008dc0b555d74c9f93a28.js'></script>
+
+        let obstacleInterval = setInterval(() => {
+            if (isPlaying) {
+                createObstacle();
+            }
+        }, 1500);
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Zemin Çizimi
+            ctx.fillStyle = '#666';
+            ctx.fillRect(0, canvas.height - 10, canvas.width, 10);
+
+            // Dinozor Çizimi
+            ctx.fillStyle = dino.color;
+            ctx.fillRect(dino.x, dino.y, dino.width, dino.height);
+
+            // Engelleri Çizme
+            obstacles.forEach(obstacle => {
+                ctx.fillStyle = obstacle.color;
+                ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+            });
+        }
+
+        function update() {
+            if (!isPlaying) return;
+
+            // Dinozor Zıplama Mantığı
+            if (dino.isJumping) {
+                dino.y += dino.jumpSpeed;
+                dino.jumpSpeed += 1;
+                if (dino.y >= canvas.height - dino.height) {
+                    dino.y = canvas.height - dino.height;
+                    dino.isJumping = false;
+                }
+            }
+
+            // Engelleri Hareket Ettirme
+            obstacles = obstacles.filter(obstacle => obstacle.x + obstacle.width > 0);
+            obstacles.forEach(obstacle => {
+                obstacle.x -= obstacleSpeed;
+
+                // Çarpışma Kontrolü
+                if (dino.x < obstacle.x + obstacle.width &&
+                    dino.x + dino.width > obstacle.x &&
+                    dino.y < obstacle.y + obstacle.height &&
+                    dino.y + dino.height > obstacle.y) {
+                    
+                    lives--;
+                    livesEl.textContent = lives;
+                    
+                    if (lives <= 0) {
+                        gameOver();
+                    } else {
+                        // Engelden kurtulma
+                        obstacles = []; // Engelleri temizle
+                        dino.y = canvas.height - dino.height; // Dino'yu yere döndür
+                        dino.isJumping = false;
+                    }
+                }
+            });
+
+            score++;
+            scoreEl.textContent = score;
+
+            draw();
+            requestAnimationFrame(update);
+        }
+
+        function gameOver() {
+            isPlaying = false;
+            finalScoreEl.textContent = score;
+            messageBox.style.display = 'block';
+            adButton.style.display = 'block';
+            messageTitleEl.textContent = 'Oyun Bitti!';
+            messageTextEl.innerHTML = `Skorunuz: <span id="finalScore">${score}</span>`;
+        }
+
+        function startGame() {
+            score = 0;
+            lives = 3;
+            dino.y = canvas.height - dino.height;
+            obstacles = [];
+            scoreEl.textContent = score;
+            livesEl.textContent = lives;
+            messageBox.style.display = 'none';
+            isPlaying = true;
+            update();
+        }
+
+        // Reklam butonu olay dinleyicisi
+        adButton.addEventListener('click', () => {
+            if (isAdLoading) return;
+
+            // Mesaj kutusunu ve butonu güncelle
+            isAdLoading = true;
+            adButton.disabled = true;
+            adButton.innerHTML = `<span class="loader"></span> Reklam Yükleniyor...`;
+
+            // Adcash reklamını çağırma
+            // Bu örnekte 5 saniyelik bir gecikme ile reklamı simüle ediyoruz
+            // Gerçek bir Adcash reklamı burada çalışacaktır
+            setTimeout(() => {
+                // Reklam izlendi, can ver ve oyunu başlat
+                lives = 1;
+                livesEl.textContent = lives;
+                startGame();
+                
+                isAdLoading = false;
+                adButton.disabled = false;
+                adButton.innerHTML = 'Reklam İzle ve Can Kazan';
+
+                // Opsiyonel olarak, reklam gösterimini tetikleme
+                aclib.runInPagePush({
+                    zoneId: adcashZoneId,
+                    maxAds: 1,
+                });
+            }, 5000); // 5 saniyelik gecikme
+        });
+
+        // Tekrar Başlat butonu olay dinleyicisi
+        restartButton.addEventListener('click', () => {
+            startGame();
+        });
+
+        // Sayfa yüklendiğinde oyunu başlat
+        window.onload = function() {
+            startGame();
+        }
+    </script>
 </body>
 </html>
