@@ -6,17 +6,31 @@
     <title>Benim Her Amaçlı Uygulamam</title>
     
     <link rel="manifest" href="/manifest.json">
-    </head>
-<body>
-  <div class="iframe">
-  <iframe src="https://www.ornek-site.com" frameborder="0"></iframe>
-</div>
-  <style>
-    .iframe { position: fixed; /* iframe'i tarayıcı penceresine sabitler */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%; }
+    <meta name="theme-color" content="#007bff">
+    
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Sayfada kaydırmayı engelle */
+        }
+        .iframe-container { 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
-    </body>
+</head>
+<body>
+    <div class="iframe-container">
+        <iframe src="https://www.ornek-site.com"></iframe>
+    </div>
+</body>
 </html>
