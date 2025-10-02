@@ -1,36 +1,52 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Benim Her Amaçlı Uygulamam</title>
-    
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#007bff">
-    
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            overflow: hidden; /* Sayfada kaydırmayı engelle */
-        }
-        .iframe-container { 
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+    <link href="gamemonetize.com" rel="preconnect">
+  <title>Gamemonetize Banner Entegrasyonu</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f9f9f9;
+      text-align: center;
+      padding: 40px;
+    }
+    #banner-area {
+      width: 300px;
+      height: 250px;
+      margin: auto;
+      border: 1px solid #ccc;
+      background: #fff;
+    }
+  </style>
 </head>
 <body>
-    <div class="iframe-container">
-        <iframe src="https://youtube.com/embed/ikMVnav8kiA"></iframe>
-    </div>
+
+  <h1>Reklam Alanı</h1>
+  <div id="banner-area"></div>
+
+  <script type="text/javascript">
+    window.SDK_OPTIONS = {
+      gameId: "4kci7og3klgj0ivy2wz3gdvd9dth5e7n",
+      onEvent: function (e) {
+        if (e.name === "SDK_READY") {
+          if (typeof sdk !== 'undefined' && typeof sdk.showBanner !== 'undefined') {
+            sdk.showBanner(); // Banner reklamı tetikler
+          }
+        }
+      }
+    };
+
+    (function (d, t, id) {
+      var s = d.getElementsByTagName(t)[0];
+      if (!d.getElementById(id)) {
+        var js = d.createElement(t);
+        js.id = id;
+        js.src = "https://api.gamemonetize.com/sdk.js";
+        s.parentNode.insertBefore(js, s);
+      }
+    })(document, "script", "gamemonetize-sdk");
+  </script>
+
 </body>
 </html>
