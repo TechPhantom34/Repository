@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Gamemonetize Banner Entegrasyonu</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f9f9f9;
+      text-align: center;
+      padding: 40px;
+    }
+    #banner-area {
+      width: 300px;
+      height: 250px;
+      margin: auto;
+      border: 1px solid #ccc;
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Reklam Alanı</h1>
+  <div id="banner-area"></div>
+
+  <script type="text/javascript">
+    window.SDK_OPTIONS = {
+      gameId: "4kci7og3klgj0ivy2wz3gdvd9dth5e7n",
+      onEvent: function (e) {
+        if (e.name === "SDK_READY") {
+          if (typeof sdk !== 'undefined' && typeof sdk.showBanner !== 'undefined') {
+            sdk.showBanner(); // Banner reklamı tetikler
+          }
+        }
+      }
+    };
+
+    (function (d, t, id) {
+      var s = d.getElementsByTagName(t)[0];
+      if (!d.getElementById(id)) {
+        var js = d.createElement(t);
+        js.id = id;
+        js.src = "https://api.gamemonetize.com/sdk.js";
+        s.parentNode.insertBefore(js, s);
+      }
+    })(document, "script", "gamemonetize-sdk");
+  </script>
+
+</body>
+</html>
